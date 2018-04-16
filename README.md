@@ -22,4 +22,4 @@ Greedy Snake game on Android based on **MVP** architecture.
 
 > Copyright (c) 2018 Johnny Miller (鈡俊).
 > Licensed under the [MIT License](https://opensource.org/licenses/MIT).
-> (See the [LICENSE](https://github.com/johnnymillergh/NewVista-For-Customer/blob/master/LICENSE) file for the whole license text.)
+> (See the [LICENSE](https://github.com/johnnymillergh/GreedySnake/blob/master/LICENSE) file for the whole license text.)
