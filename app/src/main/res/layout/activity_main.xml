@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
+            android:onClick="onClickStartOrPause"
             android:text="Start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -39,6 +40,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:onClick="onClickUp"
             android:text="Up"
             app:layout_constraintBottom_toTopOf="@+id/right"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,6 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
+            android:onClick="onClickRight"
             android:text="Right"
             app:layout_constraintBottom_toTopOf="@+id/down"
             app:layout_constraintStart_toEndOf="@+id/up"/>
@@ -61,6 +64,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:onClick="onClickDown"
             android:text="Down"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/right"
@@ -72,9 +76,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
+            android:onClick="onClickLeft"
             android:text="Left"
             app:layout_constraintBottom_toTopOf="@+id/down"
-            app:layout_constraintEnd_toStartOf="@+id/up"
-            />
+            app:layout_constraintEnd_toStartOf="@+id/up"/>
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>
