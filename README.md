@@ -2,7 +2,7 @@
 
 # Greedy Snake
 
-Greedy Snake game on Android based on **MVP** architecture.
+Greedy Snake game on Android based on **MVP** architecture. It's a very simple game that has a snake looks like a line which grows in length and food which is represented by squares.
 
 ## Features
 - **App**
