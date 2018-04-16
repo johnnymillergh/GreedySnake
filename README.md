@@ -1,4 +1,4 @@
-![FeaturePicture](https://raw.githubusercontent.com/johnnymillergh/MaterialLibrary/master/Greedy%20Snake%20App%20Assets/Greed%20Snake%20Feature%20Graphic.png)
+![Logo](https://raw.githubusercontent.com/johnnymillergh/MaterialLibrary/master/Greedy%20Snake%20App%20Assets/Greed%20Snake%20Feature%20Graphic.png)
 
 # Greedy Snake
 
