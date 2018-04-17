@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="restart">重新开始</string>
+    <string name="exit">退出</string>
+</resources>

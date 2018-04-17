@@ -29,4 +29,11 @@ public class GridPosition {
     public void setY(int y) {
         this.y = y;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        GridPosition gridPosition = (GridPosition) obj;
+        if (this.getX() == gridPosition.getX() && this.getY() == gridPosition.getY()) return true;
+        else return false;
+    }
 }

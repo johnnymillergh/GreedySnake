@@ -28,15 +28,16 @@ public class SnakePanelView extends View {
 
     private GridPosition mSnakeHeader;//蛇头部位置
     private GridPosition mFoodPosition;//食物的位置
-    private int mSnakeLength = 4;
-    private long mSpeed = 4;
-    private int mSnakeDirection = GameType.RIGHT;
-    private boolean mIsEndGame = false;
-    private int mGridSize = 20;
-    private Paint mGridPaint = new Paint();
-    private Paint mStrokePaint = new Paint();
-    private int mRectSize = dp2px(getContext(), 15);
-    private int mStartX, mStartY;
+    private List<GridPosition> foodPositions = new ArrayList<>();//食物的位置
+    private int snakeLength = 4;
+    private long speed = 4;
+    private int snakeDirection = GameType.RIGHT;
+    private boolean isEndGame = false;
+    private int gridSize = 20;
+    private Paint gridPaint = new Paint();
+    private Paint strokePaint = new Paint();
+    private int rectSize = dp2px(getContext(), 15);
+    private int startX, startY;
 
     public SnakePanelView(Context context) {
         this(context, null);
@@ -53,9 +54,9 @@ public class SnakePanelView extends View {
 
     private void init() {
         List<GridSquare> squares;
-        for (int i = 0; i < mGridSize; i++) {
+        for (int i = 0; i < gridSize; i++) {
             squares = new ArrayList<>();
-            for (int j = 0; j < mGridSize; j++) {
+            for (int j = 0; j < gridSize; j++) {
                 squares.add(new GridSquare(GameType.GRID));
             }
             mGridSquare.add(squares);
@@ -63,20 +64,25 @@ public class SnakePanelView extends View {
         mSnakeHeader = new GridPosition(10, 10);
         mSnakePositions.add(new GridPosition(mSnakeHeader.getX(), mSnakeHeader.getY()));
         Random random = new Random();
-        mFoodPosition = new GridPosition(random.nextInt(mGridSize - 1), random.nextInt(mGridSize - 1));
-        mIsEndGame = true;
+        mFoodPosition = new GridPosition(random.nextInt(gridSize - 1), random.nextInt(gridSize - 1));
+
+        for (int i = 0; i < random.nextInt(6); i++) {
+            GridPosition gridPosition = new GridPosition(random.nextInt(gridSize - 1), random.nextInt(gridSize - 1));
+            foodPositions.add(gridPosition);
+        }
+        isEndGame = true;
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mStartX = w / 2 - mGridSize * mRectSize / 2;
-        mStartY = dp2px(getContext(), 40);
+        startX = w / 2 - gridSize * rectSize / 2;
+        startY = dp2px(getContext(), 40);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int height = mStartY * 2 + mGridSize * mRectSize;
+        int height = startY * 2 + gridSize * rectSize;
         setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec), height);
     }
 
@@ -85,25 +91,25 @@ public class SnakePanelView extends View {
         super.onDraw(canvas);
         canvas.drawColor(Color.WHITE);
         //格子画笔
-        mGridPaint.reset();
-        mGridPaint.setAntiAlias(true);
-        mGridPaint.setStyle(Paint.Style.FILL);
-        mGridPaint.setAntiAlias(true);
+        gridPaint.reset();
+        gridPaint.setAntiAlias(true);
+        gridPaint.setStyle(Paint.Style.FILL);
+        gridPaint.setAntiAlias(true);
 
-        mStrokePaint.reset();
-        mStrokePaint.setColor(Color.BLACK);
-        mStrokePaint.setStyle(Paint.Style.STROKE);
-        mStrokePaint.setAntiAlias(true);
+        strokePaint.reset();
+        strokePaint.setColor(Color.BLACK);
+        strokePaint.setStyle(Paint.Style.STROKE);
+        strokePaint.setAntiAlias(true);
 
-        for (int i = 0; i < mGridSize; i++) {
-            for (int j = 0; j < mGridSize; j++) {
-                int left = mStartX + i * mRectSize;
-                int top = mStartY + j * mRectSize;
-                int right = left + mRectSize;
-                int bottom = top + mRectSize;
-                canvas.drawRect(left, top, right, bottom, mStrokePaint);
-                mGridPaint.setColor(mGridSquare.get(i).get(j).getColor());
-                canvas.drawRect(left, top, right, bottom, mGridPaint);
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                int left = startX + i * rectSize;
+                int top = startY + j * rectSize;
+                int right = left + rectSize;
+                int bottom = top + rectSize;
+                canvas.drawRect(left, top, right, bottom, strokePaint);
+                gridPaint.setColor(mGridSquare.get(i).get(j).getColor());
+                canvas.drawRect(left, top, right, bottom, gridPaint);
             }
         }
     }
@@ -111,34 +117,34 @@ public class SnakePanelView extends View {
     private void refreshFood(GridPosition foodPosition) {
         Random random = new Random();
         for (int i = 0; i < random.nextInt(6); i++) {
-            GridPosition randomGridPosition = new GridPosition(random.nextInt(mGridSize - 1), random.nextInt
-                    (mGridSize - 1));
+            GridPosition randomGridPosition = new GridPosition(random.nextInt(gridSize - 1), random.nextInt
+                    (gridSize - 1));
             mGridSquare.get(randomGridPosition.getX()).get(randomGridPosition.getY()).setType(GameType.FOOD);
         }
     }
 
     public void setSpeed(long speed) {
-        mSpeed = speed;
+        this.speed = speed;
     }
 
     public void setGridSize(int gridSize) {
-        mGridSize = gridSize;
+        this.gridSize = gridSize;
     }
 
     public void setSnakeDirection(int snakeDirection) {
-        if (mSnakeDirection == GameType.RIGHT && snakeDirection == GameType.LEFT) return;
-        if (mSnakeDirection == GameType.LEFT && snakeDirection == GameType.RIGHT) return;
-        if (mSnakeDirection == GameType.TOP && snakeDirection == GameType.BOTTOM) return;
-        if (mSnakeDirection == GameType.BOTTOM && snakeDirection == GameType.TOP) return;
-        mSnakeDirection = snakeDirection;
+        if (this.snakeDirection == GameType.RIGHT && snakeDirection == GameType.LEFT) return;
+        if (this.snakeDirection == GameType.LEFT && snakeDirection == GameType.RIGHT) return;
+        if (this.snakeDirection == GameType.TOP && snakeDirection == GameType.BOTTOM) return;
+        if (this.snakeDirection == GameType.BOTTOM && snakeDirection == GameType.TOP) return;
+        this.snakeDirection = snakeDirection;
     }
 
     private class GameMainThread extends Thread {
 
         @Override
         public void run() {
-            while (!mIsEndGame) {
-                moveSnake(mSnakeDirection);
+            while (!isEndGame) {
+                moveSnake(snakeDirection);
                 checkCollision();
                 refreshGridSquare();
                 handleSnakeTail();
@@ -149,7 +155,7 @@ public class SnakePanelView extends View {
 
         private void handleSpeed() {
             try {
-                sleep(1000 / mSpeed);
+                sleep(1000 / speed);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -159,22 +165,31 @@ public class SnakePanelView extends View {
     //检测碰撞
     private void checkCollision() {
         //检测是否咬到自己
-        GridPosition headerPosition = mSnakePositions.get(mSnakePositions.size() - 1);
+        GridPosition headPosition = mSnakePositions.get(mSnakePositions.size() - 1);
         for (int i = 0; i < mSnakePositions.size() - 2; i++) {
             GridPosition position = mSnakePositions.get(i);
-            if (headerPosition.getX() == position.getX() && headerPosition.getY() == position.getY()) {
+            if (headPosition.getX() == position.getX() && headPosition.getY() == position.getY()) {
                 //咬到自己 停止游戏
-                mIsEndGame = true;
+                isEndGame = true;
                 showMessageDialog();
                 return;
             }
         }
 
-        //判断是否吃到食物
-        if (headerPosition.getX() == mFoodPosition.getX()
-                && headerPosition.getY() == mFoodPosition.getY()) {
-            mSnakeLength++;
-            generateFood();
+//        //判断是否吃到食物
+//        if (headPosition.getX() == mFoodPosition.getX()
+//                && headPosition.getY() == mFoodPosition.getY()) {
+//            snakeLength++;
+//            generateFood();
+//        }
+
+        // Check if snake have eaten the food
+        for (int i = 0; i < foodPositions.size(); i++) {
+            if (headPosition.equals(foodPositions.get(i))) {
+                snakeLength++;
+                foodPositions.remove(foodPositions.get(i));
+                generateFood();
+            }
         }
     }
 
@@ -182,16 +197,16 @@ public class SnakePanelView extends View {
         post(new Runnable() {
             @Override
             public void run() {
-                new AlertDialog.Builder(getContext()).setMessage("Game " + "Over!")
+                new AlertDialog.Builder(getContext()).setMessage("Game Over!")
                         .setCancelable(false)
-                        .setPositiveButton("重新开始", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                                 reStartGame();
                             }
                         })
-                        .setNegativeButton("退出", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -204,7 +219,7 @@ public class SnakePanelView extends View {
     }
 
     public void reStartGame() {
-        if (!mIsEndGame) return;
+        if (!isEndGame) return;
         for (List<GridSquare> squares : mGridSquare) {
             for (GridSquare square : squares) {
                 square.setType(GameType.GRID);
@@ -218,18 +233,23 @@ public class SnakePanelView extends View {
         }
         mSnakePositions.clear();
         mSnakePositions.add(new GridPosition(mSnakeHeader.getX(), mSnakeHeader.getY()));
-        mSnakeLength = 3;//蛇的长度
-        mSnakeDirection = GameType.RIGHT;
-        mSpeed = 4;//速度
-        if (mFoodPosition != null) {
-            Random random = new Random();
-            mFoodPosition.setX(random.nextInt(mGridSize - 1));
-            mFoodPosition.setY(random.nextInt(mGridSize - 1));
-        } else {
-            mFoodPosition = new GridPosition(0, 0);
-        }
-        refreshFood(mFoodPosition);
-        mIsEndGame = false;
+        snakeLength = 3;//蛇的长度
+        snakeDirection = GameType.RIGHT;
+        speed = 4;//速度
+
+//        if (mFoodPosition != null) {
+//            Random random = new Random();
+//            mFoodPosition.setX(random.nextInt(gridSize - 1));
+//            mFoodPosition.setY(random.nextInt(gridSize - 1));
+//        } else {
+//            mFoodPosition = new GridPosition(0, 0);
+//        }
+//        refreshFood(mFoodPosition);
+
+        foodPositions.clear();
+        generateFood();
+
+        isEndGame = false;
         GameMainThread thread = new GameMainThread();
         thread.start();
     }
@@ -237,27 +257,43 @@ public class SnakePanelView extends View {
     //生成food
     private void generateFood() {
         Random random = new Random();
-        int foodX = random.nextInt(mGridSize - 1);
-        int foodY = random.nextInt(mGridSize - 1);
-        for (int i = 0; i < mSnakePositions.size() - 1; i++) {
-            if (foodX == mSnakePositions.get(i).getX() && foodY == mSnakePositions.get(i).getY()) {
-                //不能生成在蛇身上
-                foodX = random.nextInt(mGridSize - 1);
-                foodY = random.nextInt(mGridSize - 1);
-                //重新循环
-                i = 0;
+//        int foodX = random.nextInt(gridSize - 1);
+//        int foodY = random.nextInt(gridSize - 1);
+//        for (int i = 0; i < mSnakePositions.size() - 1; i++) {
+//            if (foodX == mSnakePositions.get(i).getX() && foodY == mSnakePositions.get(i).getY()) {
+//                //不能生成在蛇身上
+//                foodX = random.nextInt(gridSize - 1);
+//                foodY = random.nextInt(gridSize - 1);
+//                //重新循环
+//                i = 0;
+//            }
+//        }
+//        mFoodPosition.setX(foodX);
+//        mFoodPosition.setY(foodY);
+//        refreshFood(mFoodPosition);
+
+        if (foodPositions.size() == 0) {
+            int count = random.nextInt(6) + 1;
+            for (int i = 0; i < count; i++) {
+                GridPosition gridPosition = new GridPosition(random.nextInt(gridSize - 1), random.nextInt(gridSize
+                        - 1));
+                foodPositions.add(gridPosition);
             }
+            refreshFood();
         }
-        mFoodPosition.setX(foodX);
-        mFoodPosition.setY(foodY);
-        refreshFood(mFoodPosition);
+    }
+
+    private void refreshFood() {
+        for (GridPosition gp : foodPositions) {
+            mGridSquare.get(gp.getX()).get(gp.getY()).setType(GameType.FOOD);
+        }
     }
 
     private void moveSnake(int snakeDirection) {
         switch (snakeDirection) {
             case GameType.LEFT:
                 if (mSnakeHeader.getX() - 1 < 0) {//边界判断：如果到了最左边 让他穿过屏幕到最右边
-                    mIsEndGame = true;
+                    isEndGame = true;
                     showMessageDialog();
                     return;
                 } else {
@@ -267,7 +303,7 @@ public class SnakePanelView extends View {
                 break;
             case GameType.TOP:
                 if (mSnakeHeader.getY() - 1 < 0) {
-                    mIsEndGame = true;
+                    isEndGame = true;
                     showMessageDialog();
                     return;
                 } else {
@@ -276,8 +312,8 @@ public class SnakePanelView extends View {
                 mSnakePositions.add(new GridPosition(mSnakeHeader.getX(), mSnakeHeader.getY()));
                 break;
             case GameType.RIGHT:
-                if (mSnakeHeader.getX() + 1 >= mGridSize) {
-                    mIsEndGame = true;
+                if (mSnakeHeader.getX() + 1 >= gridSize) {
+                    isEndGame = true;
                     showMessageDialog();
                     return;
                 } else {
@@ -286,8 +322,8 @@ public class SnakePanelView extends View {
                 mSnakePositions.add(new GridPosition(mSnakeHeader.getX(), mSnakeHeader.getY()));
                 break;
             case GameType.BOTTOM:
-                if (mSnakeHeader.getY() + 1 >= mGridSize) {
-                    mIsEndGame = true;
+                if (mSnakeHeader.getY() + 1 >= gridSize) {
+                    isEndGame = true;
                     showMessageDialog();
                     return;
                 } else {
@@ -305,19 +341,19 @@ public class SnakePanelView extends View {
     }
 
     private void handleSnakeTail() {
-        int snakeLength = mSnakeLength;
+        int snakeLengthLocal = snakeLength;
         for (int i = mSnakePositions.size() - 1; i >= 0; i--) {
-            if (snakeLength > 0) {
-                snakeLength--;
+            if (snakeLengthLocal > 0) {
+                snakeLengthLocal--;
             } else {//将超过长度的格子 置为 GameType.GRID
                 GridPosition position = mSnakePositions.get(i);
                 mGridSquare.get(position.getX()).get(position.getY()).setType(GameType.GRID);
             }
         }
-        snakeLength = mSnakeLength;
+        snakeLengthLocal = snakeLength;
         for (int i = mSnakePositions.size() - 1; i >= 0; i--) {
-            if (snakeLength > 0) {
-                snakeLength--;
+            if (snakeLengthLocal > 0) {
+                snakeLengthLocal--;
             } else {
                 mSnakePositions.remove(i);
             }
