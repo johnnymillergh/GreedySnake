@@ -19,9 +19,9 @@ public class GridSquare {
             case GameType.GRID://空格子
                 return Color.WHITE;
             case GameType.FOOD://食物
-                return Color.BLUE;
+                return Color.parseColor("#28772d");
             case GameType.SNAKE://蛇
-                return Color.parseColor("#FF4081");
+                return Color.parseColor("#28772d");
         }
         return Color.WHITE;
     }

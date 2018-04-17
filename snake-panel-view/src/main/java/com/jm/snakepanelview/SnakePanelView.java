@@ -26,8 +26,7 @@ public class SnakePanelView extends View {
     private List<List<GridSquare>> mGridSquare = new ArrayList<>();
     private List<GridPosition> mSnakePositions = new ArrayList<>();
 
-    private GridPosition mSnakeHeader;//蛇头部位置
-    private GridPosition mFoodPosition;//食物的位置
+    private GridPosition headOfSnake;//蛇头部位置
     private List<GridPosition> foodPositions = new ArrayList<>();//食物的位置
     private int snakeLength = 4;
     private long speed = 4;
@@ -61,10 +60,9 @@ public class SnakePanelView extends View {
             }
             mGridSquare.add(squares);
         }
-        mSnakeHeader = new GridPosition(10, 10);
-        mSnakePositions.add(new GridPosition(mSnakeHeader.getX(), mSnakeHeader.getY()));
+        headOfSnake = new GridPosition(10, 10);
+        mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
         Random random = new Random();
-        mFoodPosition = new GridPosition(random.nextInt(gridSize - 1), random.nextInt(gridSize - 1));
 
         for (int i = 0; i < random.nextInt(6); i++) {
             GridPosition gridPosition = new GridPosition(random.nextInt(gridSize - 1), random.nextInt(gridSize - 1));
@@ -225,14 +223,14 @@ public class SnakePanelView extends View {
                 square.setType(GameType.GRID);
             }
         }
-        if (mSnakeHeader != null) {
-            mSnakeHeader.setX(10);
-            mSnakeHeader.setY(10);
+        if (headOfSnake != null) {
+            headOfSnake.setX(10);
+            headOfSnake.setY(10);
         } else {
-            mSnakeHeader = new GridPosition(10, 10);//蛇的初始位置
+            headOfSnake = new GridPosition(10, 10);//蛇的初始位置
         }
         mSnakePositions.clear();
-        mSnakePositions.add(new GridPosition(mSnakeHeader.getX(), mSnakeHeader.getY()));
+        mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
         snakeLength = 3;//蛇的长度
         snakeDirection = GameType.RIGHT;
         speed = 4;//速度
@@ -292,44 +290,44 @@ public class SnakePanelView extends View {
     private void moveSnake(int snakeDirection) {
         switch (snakeDirection) {
             case GameType.LEFT:
-                if (mSnakeHeader.getX() - 1 < 0) {//边界判断：如果到了最左边 让他穿过屏幕到最右边
+                if (headOfSnake.getX() - 1 < 0) {//边界判断：如果到了最左边 让他穿过屏幕到最右边
                     isEndGame = true;
                     showMessageDialog();
                     return;
                 } else {
-                    mSnakeHeader.setX(mSnakeHeader.getX() - 1);
+                    headOfSnake.setX(headOfSnake.getX() - 1);
                 }
-                mSnakePositions.add(new GridPosition(mSnakeHeader.getX(), mSnakeHeader.getY()));
+                mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
             case GameType.TOP:
-                if (mSnakeHeader.getY() - 1 < 0) {
+                if (headOfSnake.getY() - 1 < 0) {
                     isEndGame = true;
                     showMessageDialog();
                     return;
                 } else {
-                    mSnakeHeader.setY(mSnakeHeader.getY() - 1);
+                    headOfSnake.setY(headOfSnake.getY() - 1);
                 }
-                mSnakePositions.add(new GridPosition(mSnakeHeader.getX(), mSnakeHeader.getY()));
+                mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
             case GameType.RIGHT:
-                if (mSnakeHeader.getX() + 1 >= gridSize) {
+                if (headOfSnake.getX() + 1 >= gridSize) {
                     isEndGame = true;
                     showMessageDialog();
                     return;
                 } else {
-                    mSnakeHeader.setX(mSnakeHeader.getX() + 1);
+                    headOfSnake.setX(headOfSnake.getX() + 1);
                 }
-                mSnakePositions.add(new GridPosition(mSnakeHeader.getX(), mSnakeHeader.getY()));
+                mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
             case GameType.BOTTOM:
-                if (mSnakeHeader.getY() + 1 >= gridSize) {
+                if (headOfSnake.getY() + 1 >= gridSize) {
                     isEndGame = true;
                     showMessageDialog();
                     return;
                 } else {
-                    mSnakeHeader.setY(mSnakeHeader.getY() + 1);
+                    headOfSnake.setY(headOfSnake.getY() + 1);
                 }
-                mSnakePositions.add(new GridPosition(mSnakeHeader.getX(), mSnakeHeader.getY()));
+                mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
         }
     }
