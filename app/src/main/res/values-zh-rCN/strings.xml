@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Greedy Snake</string>
+    <string name="start">开始</string>
+    <string name="up">上</string>
+    <string name="right">右</string>
+    <string name="down">下</string>
+    <string name="left">左</string>
+</resources>

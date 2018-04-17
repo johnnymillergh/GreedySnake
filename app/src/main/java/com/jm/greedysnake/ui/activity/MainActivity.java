@@ -1,6 +1,7 @@
 package com.jm.greedysnake.ui.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +16,7 @@ import com.jm.snakepanelview.SnakePanelView;
 public class MainActivity
         extends BaseActivity<MainModel, MainView, MainPresenter>
         implements MainView {
+    private Toolbar toolbar;
     private SnakePanelView snakePanelView;
     private Button startOrPause;
     private Button up;
@@ -31,6 +33,7 @@ public class MainActivity
     }
 
     private void initView() {
+        toolbar = findViewById(R.id.toolbar);
         snakePanelView = findViewById(R.id.snakePanelView);
         startOrPause = findViewById(R.id.startOrPause);
         up = findViewById(R.id.up);
