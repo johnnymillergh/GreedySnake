@@ -6,16 +6,18 @@ import android.view.View;
 import android.widget.Button;
 
 import com.jm.greedysnake.R;
-import com.jm.greedysnake.mvp.model.MainModel;
-import com.jm.greedysnake.mvp.presenter.MainPresenter;
-import com.jm.greedysnake.mvp.view.MainView;
+import com.jm.greedysnake.mvp.model.GameModel;
+import com.jm.greedysnake.mvp.presenter.GamePresenter;
+import com.jm.greedysnake.mvp.view.GameView;
 import com.jm.greedysnake.ui.base.BaseActivity;
 import com.jm.snakepanelview.GameType;
 import com.jm.snakepanelview.SnakePanelView;
+import com.jm.snakepanelview.SnakePanelViewListener;
 
-public class MainActivity
-        extends BaseActivity<MainModel, MainView, MainPresenter>
-        implements MainView {
+public class GameActivity
+        extends BaseActivity<GameModel, GameView, GamePresenter>
+        implements GameView,
+        SnakePanelViewListener{
     private Toolbar toolbar;
     private SnakePanelView snakePanelView;
     private Button startOrPause;
@@ -43,13 +45,13 @@ public class MainActivity
     }
 
     @Override
-    public MainView createView() {
+    public GameView createView() {
         return this;
     }
 
     @Override
-    public MainPresenter createPresenter() {
-        return new MainPresenter();
+    public GamePresenter createPresenter() {
+        return new GamePresenter();
     }
 
     public void onClickStartOrPause(View view) {
@@ -70,5 +72,25 @@ public class MainActivity
 
     public void onClickLeft(View view) {
         snakePanelView.setSnakeDirection(GameType.LEFT);
+    }
+
+    @Override
+    public void onEatFood() {
+
+    }
+
+    @Override
+    public void onEatSelf() {
+
+    }
+
+    @Override
+    public void onHitBoundary() {
+
+    }
+
+    @Override
+    public void onMove() {
+
     }
 }
