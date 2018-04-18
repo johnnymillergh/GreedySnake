@@ -17,7 +17,7 @@ import com.jm.snakepanelview.SnakePanelViewListener;
 public class GameActivity
         extends BaseActivity<GameModel, GameView, GamePresenter>
         implements GameView,
-        SnakePanelViewListener{
+        SnakePanelViewListener {
     private Toolbar toolbar;
     private SnakePanelView snakePanelView;
     private Button startOrPause;
@@ -37,6 +37,7 @@ public class GameActivity
     private void initView() {
         toolbar = findViewById(R.id.toolbar);
         snakePanelView = findViewById(R.id.snakePanelView);
+        snakePanelView.setSnakePanelViewListener(this);
         startOrPause = findViewById(R.id.startOrPause);
         up = findViewById(R.id.up);
         right = findViewById(R.id.right);
@@ -75,22 +76,32 @@ public class GameActivity
     }
 
     @Override
-    public void onEatFood() {
+    public void onStartGame() {
+        getPresenter().playThemeMusic();
+    }
 
+    @Override
+    public void onPauseGame() {
+        getPresenter().pauseThemeMusic();
+    }
+
+    @Override
+    public void onEatFood() {
+        getPresenter().eatFood();
     }
 
     @Override
     public void onEatSelf() {
-
+        getPresenter().eatSelf();
     }
 
     @Override
     public void onHitBoundary() {
-
+        getPresenter().hitBoundary();
     }
 
     @Override
     public void onMove() {
-
+//        getPresenter().move();
     }
 }

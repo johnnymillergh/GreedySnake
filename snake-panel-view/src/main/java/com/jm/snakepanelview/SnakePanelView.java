@@ -249,6 +249,8 @@ public class SnakePanelView extends View {
         isEndGame = false;
         GameMainThread thread = new GameMainThread();
         thread.start();
+
+        snakePanelViewListener.onStartGame();
     }
 
     //生成food
