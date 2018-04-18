@@ -23,6 +23,8 @@ import java.util.Random;
 public class SnakePanelView extends View {
     private final static String TAG = SnakePanelView.class.getSimpleName();
 
+    private SnakePanelViewListener snakePanelViewListener;
+
     private List<List<GridSquare>> mGridSquare = new ArrayList<>();
     private List<GridPosition> mSnakePositions = new ArrayList<>();
 
@@ -49,6 +51,10 @@ public class SnakePanelView extends View {
     public SnakePanelView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+    }
+
+    public void setSnakePanelViewListener(SnakePanelViewListener snakePanelViewListener) {
+        this.snakePanelViewListener = snakePanelViewListener;
     }
 
     private void init() {
@@ -112,15 +118,6 @@ public class SnakePanelView extends View {
         }
     }
 
-    private void refreshFood(GridPosition foodPosition) {
-        Random random = new Random();
-        for (int i = 0; i < random.nextInt(6); i++) {
-            GridPosition randomGridPosition = new GridPosition(random.nextInt(gridSize - 1), random.nextInt
-                    (gridSize - 1));
-            mGridSquare.get(randomGridPosition.getX()).get(randomGridPosition.getY()).setType(GameType.FOOD);
-        }
-    }
-
     public void setSpeed(long speed) {
         this.speed = speed;
     }
@@ -170,6 +167,7 @@ public class SnakePanelView extends View {
                 //咬到自己 停止游戏
                 isEndGame = true;
                 showMessageDialog();
+                snakePanelViewListener.onEatSelf();
                 return;
             }
         }
@@ -187,6 +185,7 @@ public class SnakePanelView extends View {
                 snakeLength++;
                 foodPositions.remove(foodPositions.get(i));
                 generateFood();
+                snakePanelViewListener.onEatFood();
             }
         }
     }
@@ -293,9 +292,11 @@ public class SnakePanelView extends View {
                 if (headOfSnake.getX() - 1 < 0) {//边界判断：如果到了最左边 让他穿过屏幕到最右边
                     isEndGame = true;
                     showMessageDialog();
+                    snakePanelViewListener.onHitBoundary();
                     return;
                 } else {
                     headOfSnake.setX(headOfSnake.getX() - 1);
+                    snakePanelViewListener.onMove();
                 }
                 mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
@@ -303,9 +304,11 @@ public class SnakePanelView extends View {
                 if (headOfSnake.getY() - 1 < 0) {
                     isEndGame = true;
                     showMessageDialog();
+                    snakePanelViewListener.onHitBoundary();
                     return;
                 } else {
                     headOfSnake.setY(headOfSnake.getY() - 1);
+                    snakePanelViewListener.onMove();
                 }
                 mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
@@ -313,9 +316,11 @@ public class SnakePanelView extends View {
                 if (headOfSnake.getX() + 1 >= gridSize) {
                     isEndGame = true;
                     showMessageDialog();
+                    snakePanelViewListener.onHitBoundary();
                     return;
                 } else {
                     headOfSnake.setX(headOfSnake.getX() + 1);
+                    snakePanelViewListener.onMove();
                 }
                 mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
@@ -323,12 +328,15 @@ public class SnakePanelView extends View {
                 if (headOfSnake.getY() + 1 >= gridSize) {
                     isEndGame = true;
                     showMessageDialog();
+                    snakePanelViewListener.onHitBoundary();
                     return;
                 } else {
                     headOfSnake.setY(headOfSnake.getY() + 1);
+                    snakePanelViewListener.onMove();
                 }
                 mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
+            default:
         }
     }
 
