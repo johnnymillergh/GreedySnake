@@ -41,6 +41,7 @@
 
         <Button
             android:id="@+id/startOrPause"
+            style="@android:style/Widget.Material.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -57,8 +58,11 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:background="@drawable/round_button"
+            android:backgroundTint="@color/md_cyan_800_color_code"
             android:onClick="onClickUp"
             android:text="Up"
+            android:textColor="@color/md_white_color_code"
             app:layout_constraintBottom_toTopOf="@+id/right"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -69,8 +73,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
+            android:background="@drawable/round_button"
+            android:backgroundTint="@color/md_red_800_color_code"
             android:onClick="onClickRight"
             android:text="Right"
+            android:textColor="@color/md_white_color_code"
             app:layout_constraintBottom_toTopOf="@+id/down"
             app:layout_constraintStart_toEndOf="@+id/up"/>
 
@@ -81,8 +88,11 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:background="@drawable/round_button"
+            android:backgroundTint="@color/md_deep_purple_800_color_code"
             android:onClick="onClickDown"
             android:text="Down"
+            android:textColor="@color/md_white_color_code"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/right"
             app:layout_constraintStart_toEndOf="@+id/left"/>
@@ -93,8 +103,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
+            android:background="@drawable/round_button"
+            android:backgroundTint="@color/md_pink_900_color_code"
             android:onClick="onClickLeft"
             android:text="Left"
+            android:textColor="@color/md_white_color_code"
             app:layout_constraintBottom_toTopOf="@+id/down"
             app:layout_constraintEnd_toStartOf="@+id/up"/>
     </android.support.constraint.ConstraintLayout>
