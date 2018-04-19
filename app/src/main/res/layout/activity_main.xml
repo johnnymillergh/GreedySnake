@@ -47,7 +47,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:onClick="onClickStartOrPause"
-            android:text="Start"
+            android:text="@string/start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -61,7 +61,7 @@
             android:background="@drawable/round_button"
             android:backgroundTint="@color/md_cyan_800_color_code"
             android:onClick="onClickUp"
-            android:text="Up"
+            android:text="@string/up"
             android:textColor="@color/md_white_color_code"
             app:layout_constraintBottom_toTopOf="@+id/right"
             app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +76,7 @@
             android:background="@drawable/round_button"
             android:backgroundTint="@color/md_red_800_color_code"
             android:onClick="onClickRight"
-            android:text="Right"
+            android:text="@string/right"
             android:textColor="@color/md_white_color_code"
             app:layout_constraintBottom_toTopOf="@+id/down"
             app:layout_constraintStart_toEndOf="@+id/up"/>
@@ -91,7 +91,7 @@
             android:background="@drawable/round_button"
             android:backgroundTint="@color/md_deep_purple_800_color_code"
             android:onClick="onClickDown"
-            android:text="Down"
+            android:text="@string/down"
             android:textColor="@color/md_white_color_code"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/right"
@@ -106,7 +106,7 @@
             android:background="@drawable/round_button"
             android:backgroundTint="@color/md_pink_900_color_code"
             android:onClick="onClickLeft"
-            android:text="Left"
+            android:text="@string/left"
             android:textColor="@color/md_white_color_code"
             app:layout_constraintBottom_toTopOf="@+id/down"
             app:layout_constraintEnd_toStartOf="@+id/up"/>
