@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.jm.greedysnake.R;
 import com.jm.greedysnake.mvp.model.GameModel;
@@ -11,8 +12,11 @@ import com.jm.greedysnake.mvp.presenter.GamePresenter;
 import com.jm.greedysnake.mvp.view.GameView;
 import com.jm.greedysnake.ui.base.BaseActivity;
 import com.jm.snakepanelview.GameType;
+import com.jm.snakepanelview.GridPosition;
 import com.jm.snakepanelview.SnakePanelView;
 import com.jm.snakepanelview.SnakePanelViewListener;
+
+import java.util.List;
 
 public class GameActivity
         extends BaseActivity<GameModel, GameView, GamePresenter>
@@ -20,6 +24,7 @@ public class GameActivity
         SnakePanelViewListener {
     private Toolbar toolbar;
     private SnakePanelView snakePanelView;
+    private TextView result;
     private Button startOrPause;
     private Button up;
     private Button right;
@@ -38,6 +43,8 @@ public class GameActivity
         toolbar = findViewById(R.id.toolbar);
         snakePanelView = findViewById(R.id.snakePanelView);
         snakePanelView.setSnakePanelViewListener(this);
+        result = findViewById(R.id.result);
+
         startOrPause = findViewById(R.id.startOrPause);
         up = findViewById(R.id.up);
         right = findViewById(R.id.right);
@@ -86,8 +93,14 @@ public class GameActivity
     }
 
     @Override
-    public void onEatFood() {
+    public void onEatFood(final int snakeLength) {
         getPresenter().eatFood();
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                result.setText(String.valueOf(snakeLength));
+//            }
+//        });
     }
 
     @Override
@@ -103,5 +116,15 @@ public class GameActivity
     @Override
     public void onMove() {
 //        getPresenter().move();
+    }
+
+    @Override
+    public void onGenerateFood(final List<GridPosition> foodPositions) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                result.setText(foodPositions.toString());
+            }
+        });
     }
 }

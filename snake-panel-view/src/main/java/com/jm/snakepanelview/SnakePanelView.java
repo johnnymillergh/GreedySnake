@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -25,8 +27,8 @@ public class SnakePanelView extends View {
 
     private SnakePanelViewListener snakePanelViewListener;
 
-    private List<List<GridSquare>> mGridSquare = new ArrayList<>();
-    private List<GridPosition> mSnakePositions = new ArrayList<>();
+    private List<List<GridSquare>> gridSquare = new ArrayList<>();
+    private List<GridPosition> snakePositions = new ArrayList<>();
 
     private GridPosition headOfSnake;//蛇头部位置
     private List<GridPosition> foodPositions = new ArrayList<>();//食物的位置
@@ -64,10 +66,10 @@ public class SnakePanelView extends View {
             for (int j = 0; j < gridSize; j++) {
                 squares.add(new GridSquare(GameType.GRID));
             }
-            mGridSquare.add(squares);
+            gridSquare.add(squares);
         }
         headOfSnake = new GridPosition(10, 10);
-        mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
+        snakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
         Random random = new Random();
 
         for (int i = 0; i < random.nextInt(6); i++) {
@@ -112,7 +114,7 @@ public class SnakePanelView extends View {
                 int right = left + rectSize;
                 int bottom = top + rectSize;
                 canvas.drawRect(left, top, right, bottom, strokePaint);
-                gridPaint.setColor(mGridSquare.get(i).get(j).getColor());
+                gridPaint.setColor(gridSquare.get(i).get(j).getColor());
                 canvas.drawRect(left, top, right, bottom, gridPaint);
             }
         }
@@ -160,9 +162,9 @@ public class SnakePanelView extends View {
     //检测碰撞
     private void checkCollision() {
         //检测是否咬到自己
-        GridPosition headPosition = mSnakePositions.get(mSnakePositions.size() - 1);
-        for (int i = 0; i < mSnakePositions.size() - 2; i++) {
-            GridPosition position = mSnakePositions.get(i);
+        GridPosition headPosition = snakePositions.get(snakePositions.size() - 1);
+        for (int i = 0; i < snakePositions.size() - 2; i++) {
+            GridPosition position = snakePositions.get(i);
             if (headPosition.getX() == position.getX() && headPosition.getY() == position.getY()) {
                 //咬到自己 停止游戏
                 isEndGame = true;
@@ -185,7 +187,7 @@ public class SnakePanelView extends View {
                 snakeLength++;
                 foodPositions.remove(foodPositions.get(i));
                 generateFood();
-                snakePanelViewListener.onEatFood();
+                snakePanelViewListener.onEatFood(snakeLength);
             }
         }
     }
@@ -217,7 +219,7 @@ public class SnakePanelView extends View {
 
     public void reStartGame() {
         if (!isEndGame) return;
-        for (List<GridSquare> squares : mGridSquare) {
+        for (List<GridSquare> squares : gridSquare) {
             for (GridSquare square : squares) {
                 square.setType(GameType.GRID);
             }
@@ -228,8 +230,8 @@ public class SnakePanelView extends View {
         } else {
             headOfSnake = new GridPosition(10, 10);//蛇的初始位置
         }
-        mSnakePositions.clear();
-        mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
+        snakePositions.clear();
+        snakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
         snakeLength = 3;//蛇的长度
         snakeDirection = GameType.RIGHT;
         speed = 4;//速度
@@ -258,8 +260,8 @@ public class SnakePanelView extends View {
         Random random = new Random();
 //        int foodX = random.nextInt(gridSize - 1);
 //        int foodY = random.nextInt(gridSize - 1);
-//        for (int i = 0; i < mSnakePositions.size() - 1; i++) {
-//            if (foodX == mSnakePositions.get(i).getX() && foodY == mSnakePositions.get(i).getY()) {
+//        for (int i = 0; i < snakePositions.size() - 1; i++) {
+//            if (foodX == snakePositions.get(i).getX() && foodY == snakePositions.get(i).getY()) {
 //                //不能生成在蛇身上
 //                foodX = random.nextInt(gridSize - 1);
 //                foodY = random.nextInt(gridSize - 1);
@@ -273,18 +275,34 @@ public class SnakePanelView extends View {
 
         if (foodPositions.size() == 0) {
             int count = random.nextInt(6) + 1;
+            boolean hasRepeated;
             for (int i = 0; i < count; i++) {
-                GridPosition gridPosition = new GridPosition(random.nextInt(gridSize - 1), random.nextInt(gridSize
+                GridPosition randomFoodPosition = new GridPosition(random.nextInt(gridSize - 1), random.nextInt(gridSize
                         - 1));
-                foodPositions.add(gridPosition);
+                hasRepeated = false;
+
+                for (GridPosition gp : snakePositions) {
+                    if (randomFoodPosition.equals(gp)) {
+                        Log.v("Food", "Has repeated");
+                        i--;
+                        hasRepeated = true;
+                        break;
+                    }
+                }
+
+                if (!hasRepeated) {
+                    foodPositions.add(randomFoodPosition);
+                }
             }
             refreshFood();
+            snakePanelViewListener.onGenerateFood(foodPositions);
         }
     }
 
     private void refreshFood() {
+        Log.v("RefreshFood", foodPositions.toString());
         for (GridPosition gp : foodPositions) {
-            mGridSquare.get(gp.getX()).get(gp.getY()).setType(GameType.FOOD);
+            gridSquare.get(gp.getX()).get(gp.getY()).setType(GameType.FOOD);
         }
     }
 
@@ -300,7 +318,7 @@ public class SnakePanelView extends View {
                     headOfSnake.setX(headOfSnake.getX() - 1);
                     snakePanelViewListener.onMove();
                 }
-                mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
+                snakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
             case GameType.TOP:
                 if (headOfSnake.getY() - 1 < 0) {
@@ -312,7 +330,7 @@ public class SnakePanelView extends View {
                     headOfSnake.setY(headOfSnake.getY() - 1);
                     snakePanelViewListener.onMove();
                 }
-                mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
+                snakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
             case GameType.RIGHT:
                 if (headOfSnake.getX() + 1 >= gridSize) {
@@ -324,7 +342,7 @@ public class SnakePanelView extends View {
                     headOfSnake.setX(headOfSnake.getX() + 1);
                     snakePanelViewListener.onMove();
                 }
-                mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
+                snakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
             case GameType.BOTTOM:
                 if (headOfSnake.getY() + 1 >= gridSize) {
@@ -336,34 +354,34 @@ public class SnakePanelView extends View {
                     headOfSnake.setY(headOfSnake.getY() + 1);
                     snakePanelViewListener.onMove();
                 }
-                mSnakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
+                snakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
                 break;
             default:
         }
     }
 
     private void refreshGridSquare() {
-        for (GridPosition position : mSnakePositions) {
-            mGridSquare.get(position.getX()).get(position.getY()).setType(GameType.SNAKE);
+        for (GridPosition position : snakePositions) {
+            gridSquare.get(position.getX()).get(position.getY()).setType(GameType.SNAKE);
         }
     }
 
     private void handleSnakeTail() {
         int snakeLengthLocal = snakeLength;
-        for (int i = mSnakePositions.size() - 1; i >= 0; i--) {
+        for (int i = snakePositions.size() - 1; i >= 0; i--) {
             if (snakeLengthLocal > 0) {
                 snakeLengthLocal--;
             } else {//将超过长度的格子 置为 GameType.GRID
-                GridPosition position = mSnakePositions.get(i);
-                mGridSquare.get(position.getX()).get(position.getY()).setType(GameType.GRID);
+                GridPosition position = snakePositions.get(i);
+                gridSquare.get(position.getX()).get(position.getY()).setType(GameType.GRID);
             }
         }
         snakeLengthLocal = snakeLength;
-        for (int i = mSnakePositions.size() - 1; i >= 0; i--) {
+        for (int i = snakePositions.size() - 1; i >= 0; i--) {
             if (snakeLengthLocal > 0) {
                 snakeLengthLocal--;
             } else {
-                mSnakePositions.remove(i);
+                snakePositions.remove(i);
             }
         }
     }

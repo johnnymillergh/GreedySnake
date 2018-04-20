@@ -36,4 +36,9 @@ public class GridPosition {
         if (this.getX() == gridPosition.getX() && this.getY() == gridPosition.getY()) return true;
         else return false;
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + "," + y + ")";
+    }
 }
