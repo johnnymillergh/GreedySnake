@@ -5,4 +5,8 @@
     <string name="right">Right</string>
     <string name="down">Down</string>
     <string name="left">Left</string>
+    <string name="welcome">Welcome!</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="mode">Mode</string>
+    <string name="skin">Skin</string>
 </resources>

@@ -6,4 +6,8 @@
     <string name="right">右</string>
     <string name="down">下</string>
     <string name="left">左</string>
+    <string name="welcome">Welcome!</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="mode">Mode</string>
+    <string name="skin">Skin</string>
 </resources>
