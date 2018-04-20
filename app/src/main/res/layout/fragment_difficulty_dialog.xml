@@ -35,20 +35,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Easy"/>
+            android:text="@string/easy"/>
 
         <RadioButton
             android:id="@+id/normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Normal"/>
+            android:text="@string/normal"/>
 
         <RadioButton
             android:id="@+id/hard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Hard"/>
+            android:text="@string/hard"/>
     </RadioGroup>
 </android.support.constraint.ConstraintLayout>

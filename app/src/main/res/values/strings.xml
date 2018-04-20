@@ -11,4 +11,7 @@
     <string name="skin">Skin</string>
     <string name="back">Back</string>
     <string name="yes">Yes</string>
+    <string name="easy">Easy</string>
+    <string name="normal">Normal</string>
+    <string name="hard">Hard</string>
 </resources>
