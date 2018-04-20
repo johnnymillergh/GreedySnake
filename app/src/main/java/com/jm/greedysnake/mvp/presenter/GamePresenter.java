@@ -1,6 +1,7 @@
 package com.jm.greedysnake.mvp.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -10,7 +11,9 @@ import com.jm.greedysnake.R;
 import com.jm.greedysnake.mvp.base.BasePresenter;
 import com.jm.greedysnake.mvp.model.GameModel;
 import com.jm.greedysnake.mvp.view.GameView;
+import com.jm.greedysnake.ui.config.GameConfig;
 import com.jm.greedysnake.util.ApplicationUtil;
+import com.jm.snakepanelview.SnakePanelView;
 
 import java.util.HashMap;
 
@@ -110,5 +113,14 @@ public class GamePresenter extends BasePresenter<GameModel, GameView> {
                 break;
             default:
         }
+    }
+
+    public void updateSnakePanelView() {
+        gameView = getView();
+        SnakePanelView snakePanelView = gameView.onGetSnakePanelView();
+        Intent intent = gameView.onGetIntent();
+
+        int difficulty = intent.getIntExtra("difficulty", GameConfig.DIFFICULTY_EASY);
+        snakePanelView.setSpeed(difficulty);
     }
 }

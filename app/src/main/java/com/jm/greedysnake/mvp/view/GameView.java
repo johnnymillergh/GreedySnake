@@ -1,6 +1,12 @@
 package com.jm.greedysnake.mvp.view;
 
-import com.jm.greedysnake.mvp.base.BaseView;
+import android.content.Intent;
 
-public interface GameView extends BaseView{
+import com.jm.greedysnake.mvp.base.BaseView;
+import com.jm.snakepanelview.SnakePanelView;
+
+public interface GameView extends BaseView {
+    SnakePanelView onGetSnakePanelView();
+
+    Intent onGetIntent();
 }

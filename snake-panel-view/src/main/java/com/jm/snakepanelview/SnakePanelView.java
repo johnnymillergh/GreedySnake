@@ -31,7 +31,7 @@ public class SnakePanelView extends View {
 
     private GridPosition headOfSnake;//蛇头部位置
     private List<GridPosition> foodPositions = new ArrayList<>();//食物的位置
-    private int snakeLength = 4;
+    private int snakeLength = 3;
     private long speed = 4;
     private int snakeDirection = GameType.RIGHT;
     private boolean isEndGame = false;
@@ -233,7 +233,6 @@ public class SnakePanelView extends View {
         snakePositions.add(new GridPosition(headOfSnake.getX(), headOfSnake.getY()));
         snakeLength = 3;//蛇的长度
         snakeDirection = GameType.RIGHT;
-        speed = 4;//速度
 
 //        if (mFoodPosition != null) {
 //            Random random = new Random();

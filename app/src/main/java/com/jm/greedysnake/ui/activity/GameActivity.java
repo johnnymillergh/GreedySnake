@@ -1,5 +1,6 @@
 package com.jm.greedysnake.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -37,6 +38,8 @@ public class GameActivity
         setContentView(R.layout.activity_main);
 
         initView();
+
+        getPresenter().updateSnakePanelView();
     }
 
     private void initView() {
@@ -126,5 +129,15 @@ public class GameActivity
                 result.setText(foodPositions.toString());
             }
         });
+    }
+
+    @Override
+    public SnakePanelView onGetSnakePanelView() {
+        return snakePanelView;
+    }
+
+    @Override
+    public Intent onGetIntent() {
+        return getIntent();
     }
 }

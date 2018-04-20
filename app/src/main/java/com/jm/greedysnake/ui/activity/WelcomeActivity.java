@@ -1,5 +1,6 @@
 package com.jm.greedysnake.ui.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +21,7 @@ import com.jm.greedysnake.ui.fragment.DifficultyDialogFragment;
 public class WelcomeActivity
         extends BaseActivity<WelcomeModel, WelcomeView, WelcomePresenter>
         implements WelcomeView,
-        DifficultyDialogFragment.DifficultyDialogFragmentCallbackListener{
+        DifficultyDialogFragment.DifficultyDialogFragmentCallbackListener {
     private TextView welcome;
 
     private int difficulty = GameConfig.DIFFICULTY_EASY;
@@ -69,7 +70,11 @@ public class WelcomeActivity
     }
 
     public void onClickStart(View view) {
-
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("difficulty", difficulty);
+        intent.putExtra("mode", mode);
+        intent.putExtra("skinColor", skinColor);
+        startActivity(intent);
     }
 
     @Override
